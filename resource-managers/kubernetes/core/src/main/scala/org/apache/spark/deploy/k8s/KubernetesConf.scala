@@ -63,6 +63,13 @@ private[spark] case class KubernetesConf[T <: KubernetesRoleSpecificConf](
     roleVolumes: Iterable[KubernetesVolumeSpec[_ <: KubernetesVolumeSpecificConf]],
     sparkFiles: Seq[String]) {
 
+  def hadoopConfigMapName: String = s"$appResourceNamePrefix-hadoop-config"
+
+  def krbConfigMapName: String = s"$appResourceNamePrefix-krb5-file"
+
+  def tokenManager(conf: SparkConf, hConf: Configuration): KubernetesHadoopDelegationTokenManager =
+    new KubernetesHadoopDelegationTokenManager(conf, hConf)
+
   def namespace(): String = sparkConf.get(KUBERNETES_NAMESPACE)
 
   def sparkJars(): Seq[String] = sparkConf
