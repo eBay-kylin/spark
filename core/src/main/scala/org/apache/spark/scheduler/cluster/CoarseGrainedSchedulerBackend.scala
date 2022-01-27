@@ -404,6 +404,7 @@ class CoarseGrainedSchedulerBackend(scheduler: TaskSchedulerImpl, val rpcEnv: Rp
     driverEndpoint = createDriverEndpointRef(properties)
 
     if (UserGroupInformation.isSecurityEnabled()) {
+      logDebug("ugi info for current user: " + UserGroupInformation.getCurrentUser)
       delegationTokenManager = createTokenManager()
       delegationTokenManager.foreach { dtm =>
         dtm.setDriverRef(driverEndpoint)
